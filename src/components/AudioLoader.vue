@@ -16,6 +16,7 @@
     methods: {
       chooseAudio() {
         this.file = this.$refs.audioFile.files[0]
+        this.$emit('audioChosen', this.file)
       }
     }
   }

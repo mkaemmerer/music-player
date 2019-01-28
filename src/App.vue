@@ -1,8 +1,8 @@
 <template>
   <div id="app">
     <img alt="Vue logo" src="./assets/logo.png" />
-    <AudioController />
-    <AudioLoader />
+    <AudioController :audioInput="file" />
+    <AudioLoader @audioChosen="audioChosen" />
   </div>
 </template>
 
@@ -15,6 +15,16 @@ export default {
   components: {
     AudioController,
     AudioLoader
+  },
+  data() {
+    return {
+      file: null
+    }
+  },
+  methods: {
+    audioChosen(file) {
+      this.file = file
+    }
   }
 };
 </script>
