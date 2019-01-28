@@ -2,16 +2,19 @@
   <div id="app">
     <img alt="Vue logo" src="./assets/logo.png" />
     <AudioController />
+    <AudioLoader />
   </div>
 </template>
 
 <script>
 import AudioController from "./components/AudioController.vue";
+import AudioLoader from "./components/AudioLoader.vue";
 
 export default {
   name: "app",
   components: {
-    AudioController
+    AudioController,
+    AudioLoader
   }
 };
 </script>
