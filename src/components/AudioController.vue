@@ -1,6 +1,6 @@
 <template>
   <div>
-    <audio controls :src="audioInput">
+    <audio controls :src="$store.state.audioFile">
       Your browser does not support the
       <code>audio</code> element.
     </audio>
@@ -9,9 +9,6 @@
 
 <script>
 export default {
-  name: "AudioController",
-  props: {
-    audioInput: String
-  }
+  name: "AudioController"
 };
 </script>

@@ -1,23 +1,17 @@
 <template>
   <div>
-    <input type="file" id="file" ref="audioFile" @change="chooseAudio">
-    {{file && file.name}}
+    <input type="file" id="file" ref="audioFile" @change="chooseAudio" />
   </div>
 </template>
 
 <script>
-  export default {
-    name: 'AudioLoader',
-    data() {
-      return {
-        file: null,
-      }
-    },
-    methods: {
-      chooseAudio() {
-        this.file = this.$refs.audioFile.files[0]
-        this.$emit('audioChosen', this.file)
-      }
+export default {
+  name: "AudioLoader",
+  methods: {
+    chooseAudio() {
+      const file = this.$refs.audioFile.files[0];
+      this.$store.dispatch("setFile", window.URL.createObjectURL(file));
     }
   }
+};
 </script>
