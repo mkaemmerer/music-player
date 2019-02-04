@@ -23,7 +23,7 @@ export default {
   },
   methods: {
     audioChosen(file) {
-      this.file = file
+      this.file = window.URL.createObjectURL(file)
     }
   }
 };
