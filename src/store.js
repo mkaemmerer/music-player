@@ -9,7 +9,8 @@ const audioElement = document.createElement("audio");
 export default new Vuex.Store({
   state: {
     audioFile: null,
-    isPaused: false
+    isPaused: true,
+    volume: 0.5
   },
   mutations: {
     setFile(state, newFile) {
@@ -17,6 +18,9 @@ export default new Vuex.Store({
     },
     togglePlayback(state) {
       state.isPaused = !state.isPaused;
+    },
+    changeVolume(state, volume) {
+      state.volume = volume;
     }
   },
   actions: {
@@ -31,6 +35,10 @@ export default new Vuex.Store({
       audioContext.resume();
       context.state.isPaused ? audioElement.play() : audioElement.pause();
       context.commit("togglePlayback");
+    },
+    changeVolume(context, volume) {
+      audioElement.volume = volume;
+      context.commit("changeVolume", volume);
     }
   }
 });
