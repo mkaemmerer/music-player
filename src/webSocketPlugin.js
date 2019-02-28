@@ -15,13 +15,13 @@ export default function WebSocketPlugin(url) {
     // Incoming messages
     ws.onmessage = evt => {
       // handle message and commit changes to store
-      console.log(evt.data);
       const { type, payload } = JSON.parse(evt.data);
 
       switch (type) {
         case "broadcastSetFile": {
-          const file = payload;
-          console.log('receiveSetFile');
+          // const file = payload;
+          const file = new Blob([payload], { type: "application/mp3" });
+          console.log("receiveSetFile");
           console.log(file);
           //something else
           store.dispatch("receiveSetFile", file);
@@ -44,7 +44,7 @@ export default function WebSocketPlugin(url) {
               })
             );
           };
-          reader.readAsBinaryString(file);
+          reader.readAsArrayBuffer(file);
         }
       }
     });
