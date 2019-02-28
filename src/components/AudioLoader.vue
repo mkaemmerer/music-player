@@ -10,7 +10,7 @@ export default {
   methods: {
     chooseAudio() {
       const file = this.$refs.audioFile.files[0];
-      this.$store.dispatch("setFile", window.URL.createObjectURL(file));
+      this.$store.dispatch("broadcastSetFile", file);
     }
   }
 };

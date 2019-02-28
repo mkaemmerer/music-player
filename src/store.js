@@ -1,22 +1,32 @@
 import Vue from "vue";
 import Vuex from "vuex";
+import WebSocketPlugin from "./webSocketPlugin";
 
 Vue.use(Vuex);
 
 const audioContext = new window.AudioContext();
 const audioElement = document.createElement("audio");
+audioElement.onerror = err => {
+  throw err;
+};
 
 export default new Vuex.Store({
   state: {
-    audioFile: null,
     isPaused: true,
     volume: 0.5
   },
   mutations: {
-    setFile(state, newFile) {
-      state.audioFile = newFile;
+    broadcastSetFile() {
+      // handle this mutation so that websocket plugin can broadcast it
+      // actual state is handled by audioElement
     },
-    togglePlayback(state) {
+    broadcastTogglePlayback(state) {
+      state.isPaused = !state.isPaused;
+    },
+    receiveSetFile() {
+      // actual state is handled by audioElement
+    },
+    recieveTogglePlayback(state) {
       state.isPaused = !state.isPaused;
     },
     changeVolume(state, volume) {
@@ -24,21 +34,43 @@ export default new Vuex.Store({
     }
   },
   actions: {
-    setFile(context, newFile) {
-      audioElement.src = newFile;
+    // Broadcast actions
+    broadcastSetFile(context, newFile) {
+      const url = window.URL.createObjectURL(newFile);
+
+      audioElement.src = url;
       const audioSource = audioContext.createMediaElementSource(audioElement);
       audioSource.connect(audioContext.destination);
 
-      context.commit("setFile", newFile);
+      context.commit("broadcastSetFile", newFile);
     },
-    togglePlayback(context) {
+    broadcastTogglePlayback(context) {
       audioContext.resume();
       context.state.isPaused ? audioElement.play() : audioElement.pause();
-      context.commit("togglePlayback");
+      context.commit("broadcastTogglePlayback");
     },
+
+    // Receive actions
+    receiveSetFile(context, newFile) {
+      const url = window.URL.createObjectURL(newFile);
+
+      audioElement.src = url;
+      const audioSource = audioContext.createMediaElementSource(audioElement);
+      audioSource.connect(audioContext.destination);
+
+      context.commit("receiveSetFile", newFile);
+    },
+    recieveTogglePlayback(context) {
+      audioContext.resume();
+      context.state.isPaused ? audioElement.play() : audioElement.pause();
+      context.commit("recieveTogglePlayback");
+    },
+
+    // Local actions
     changeVolume(context, volume) {
       audioElement.volume = volume;
       context.commit("changeVolume", volume);
     }
-  }
+  },
+  plugins: [WebSocketPlugin()]
 });
