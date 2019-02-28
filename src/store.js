@@ -6,10 +6,9 @@ Vue.use(Vuex);
 
 const audioContext = new window.AudioContext();
 const audioElement = document.createElement("audio");
-audioElement.onerror = (err) => {
-  console.error(err)
-  debugger
-}
+audioElement.onerror = err => {
+  throw err;
+};
 
 export default new Vuex.Store({
   state: {
@@ -21,10 +20,13 @@ export default new Vuex.Store({
       // handle this mutation so that websocket plugin can broadcast it
       // actual state is handled by audioElement
     },
+    broadcastTogglePlayback(state) {
+      state.isPaused = !state.isPaused;
+    },
     receiveSetFile() {
       // actual state is handled by audioElement
     },
-    togglePlayback(state) {
+    recieveTogglePlayback(state) {
       state.isPaused = !state.isPaused;
     },
     changeVolume(state, volume) {
@@ -42,11 +44,12 @@ export default new Vuex.Store({
 
       context.commit("broadcastSetFile", newFile);
     },
-    togglePlayback(context) {
+    broadcastTogglePlayback(context) {
       audioContext.resume();
       context.state.isPaused ? audioElement.play() : audioElement.pause();
-      context.commit("togglePlayback");
+      context.commit("broadcastTogglePlayback");
     },
+
     // Receive actions
     receiveSetFile(context, newFile) {
       const url = window.URL.createObjectURL(newFile);
@@ -57,6 +60,12 @@ export default new Vuex.Store({
 
       context.commit("receiveSetFile", newFile);
     },
+    recieveTogglePlayback(context) {
+      audioContext.resume();
+      context.state.isPaused ? audioElement.play() : audioElement.pause();
+      context.commit("recieveTogglePlayback");
+    },
+
     // Local actions
     changeVolume(context, volume) {
       audioElement.volume = volume;

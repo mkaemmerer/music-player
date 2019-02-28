@@ -6,7 +6,6 @@ export default function WebSocketPlugin(url) {
     await new Promise(resolve => {
       ws.onopen = () => resolve();
     });
-    console.log("ws open()");
 
     ws.onerror = err => {
       console.error("ws onerror() ERR: ", err);
@@ -15,9 +14,18 @@ export default function WebSocketPlugin(url) {
     // Incoming messages
     ws.onmessage = evt => {
       if (evt.data instanceof Blob) {
-        // it's an audioFile! :D
-        const file = evt.data;
-        store.dispatch("receiveSetFile", file);
+        const audioFile = evt.data;
+        store.dispatch("receiveSetFile", audioFile);
+        return;
+      }
+
+      const { type } = JSON.parse(evt.data);
+
+      switch (type) {
+        case "broadcastTogglePlayback": {
+          store.dispatch("recieveTogglePlayback");
+          break;
+        }
       }
     };
 
@@ -25,8 +33,13 @@ export default function WebSocketPlugin(url) {
     store.subscribe(({ type, payload }) => {
       switch (type) {
         case "broadcastSetFile": {
-          const file = payload;
-          ws.send(file);
+          const audioFile = payload;
+          ws.send(audioFile);
+          break;
+        }
+        case "broadcastTogglePlayback": {
+          ws.send(JSON.stringify({ type }));
+          break;
         }
       }
     });
