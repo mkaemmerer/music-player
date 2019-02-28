@@ -6,6 +6,10 @@ Vue.use(Vuex);
 
 const audioContext = new window.AudioContext();
 const audioElement = document.createElement("audio");
+audioElement.onerror = (err) => {
+  console.error(err)
+  debugger
+}
 
 export default new Vuex.Store({
   state: {

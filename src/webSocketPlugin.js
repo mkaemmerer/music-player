@@ -13,21 +13,29 @@ export default function WebSocketPlugin(url) {
     };
 
     // Incoming messages
+    // ws.onmessage = evt => {
+    //   // handle message and commit changes to store
+    //   const { type, payload } = JSON.parse(evt.data);
+    //
+    //   switch (type) {
+    //     case "broadcastSetFile": {
+    //       // const file = payload;
+    //       const file = new Blob([payload], { type: "application/mp3" });
+    //       console.log(payload);
+    //       console.log("receiveSetFile");
+    //       console.log(file);
+    //       //something else
+    //       store.dispatch("receiveSetFile", file);
+    //     }
+    //   }
+    // };
     ws.onmessage = evt => {
-      // handle message and commit changes to store
-      const { type, payload } = JSON.parse(evt.data);
-
-      switch (type) {
-        case "broadcastSetFile": {
-          // const file = payload;
-          const file = new Blob([payload], { type: "application/mp3" });
-          console.log("receiveSetFile");
-          console.log(file);
-          //something else
-          store.dispatch("receiveSetFile", file);
-        }
-      }
-    };
+      console.log(typeof evt.data)
+      const file = new Blob([evt.data], { type: "application/mp3" });
+      console.log("receiveSetFile");
+      console.log(file);
+      store.dispatch("receiveSetFile", file);
+    }
 
     // Outgoing messages
     store.subscribe(({ type, payload }) => {
@@ -36,7 +44,8 @@ export default function WebSocketPlugin(url) {
           const file = payload;
           const reader = new FileReader();
           reader.onload = () => {
-            // ws.send(`broadcastSetFile: ${reader.result}`);
+            console.log(reader.result)
+            ws.send(reader.result);
             ws.send(
               JSON.stringify({
                 type: "broadcastSetFile",
