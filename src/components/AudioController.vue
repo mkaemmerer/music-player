@@ -6,9 +6,9 @@
         type="range"
         min="0.0"
         max="1.0"
-        step="0.05"
+        step="0.01"
         :value="$store.state.volume"
-        @change="changeVolume"
+        @input="changeVolume"
       />
     </div>
     <div class="playback-controls">
