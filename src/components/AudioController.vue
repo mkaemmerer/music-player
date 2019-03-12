@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="audio-controls">
     <div class="volume-controls">
       <input
         class="slider"
@@ -40,6 +40,10 @@ export default {
 </script>
 
 <style scoped>
+.audio-controls {
+  padding: 5px;
+}
+
 .volume-controls {
   display: flex;
 }
@@ -60,6 +64,7 @@ export default {
   padding: 10px;
   font-size: inherit;
   background-color: #dddddd;
+  cursor: pointer;
 }
 .button--prev {
 

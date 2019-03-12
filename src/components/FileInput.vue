@@ -25,11 +25,7 @@ export default {
 
 <style scoped>
 .file-upload__input {
-  border: 0;
-  margin: 0;
-  padding: 0;
-  height: 0;
-  width: 0;
+  display: none;
 }
 
 .file-upload__button {
@@ -38,6 +34,7 @@ export default {
   border-radius: 4px;
   padding: 10px;
   display: flex;
+  cursor: pointer;
   justify-content: center;
 }
 

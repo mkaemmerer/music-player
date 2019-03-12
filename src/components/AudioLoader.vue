@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="audio-loader">
     <FileInput @fileAction="(file) => { this.$store.dispatch('broadcastSetFile', file); }" />
   </div>
 </template>
@@ -14,3 +14,9 @@ export default {
   }
 };
 </script>
+
+<style scoped>
+.audio-loader {
+  padding: 5px;  
+}
+</style>
