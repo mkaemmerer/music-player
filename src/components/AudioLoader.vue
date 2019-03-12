@@ -1,6 +1,6 @@
 <template>
   <div>
-    <FileInput />
+    <FileInput @fileAction="(file) => { this.$store.dispatch('broadcastSetFile', file); }" />
   </div>
 </template>
 

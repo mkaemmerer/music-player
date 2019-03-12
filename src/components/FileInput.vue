@@ -4,8 +4,8 @@
       class="file-upload__input"
       type="file"
       id="file"
-      ref="audioFile"
-      @change="chooseAudio"
+      ref="file"
+      @change="chooseFile"
     />
     <label class="file-upload__button" for="file">addFile</label>
   </div>
@@ -15,9 +15,9 @@
 export default {
   name: "FileInput",
   methods: {
-    chooseAudio() {
-      const file = this.$refs.audioFile.files[0];
-      this.$store.dispatch("broadcastSetFile", file);
+    chooseFile() {
+      const file = this.$refs.file.files[0];
+      this.$emit("fileAction", file);
     }
   }
 };
@@ -39,5 +39,9 @@ export default {
   padding: 10px;
   display: flex;
   justify-content: center;
+}
+
+.file-upload__input:focus ~ .file-upload__button {
+  box-shadow: 0 0 1px 3px lightblue;
 }
 </style>
