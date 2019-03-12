@@ -1,7 +1,7 @@
-class AudioSource{
+class AudioSource {
   // contains only logic and interfaces pertaining to AudioContext and it's analyzer.
   // will NOT contain any logic pertaining to visualization.
-  constructor(audioSrc, options={}){
+  constructor(audioElement, options = {}) {
     // reflect options
     this.options = options;
     this.smoothing = options.smoothing || 0.0;
@@ -14,6 +14,7 @@ class AudioSource{
     this.analyser = this.context.createAnalyser();
     this.volume = this.context.createGain();
 
+    const audioSrc = this.context.createMediaElementSource(audioElement);
     // Connect the output of the source to the input of the analyser
     audioSrc.connect(this.analyser);
     // Connect the output of the analyser to the destination
