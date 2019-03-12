@@ -1,17 +1,16 @@
 <template>
   <div>
-    <input type="file" id="file" ref="audioFile" @change="chooseAudio" />
+    <FileInput />
   </div>
 </template>
 
 <script>
+import FileInput from "./FileInput";
+
 export default {
   name: "AudioLoader",
-  methods: {
-    chooseAudio() {
-      const file = this.$refs.audioFile.files[0];
-      this.$store.dispatch("broadcastSetFile", file);
-    }
+  components: {
+    FileInput
   }
 };
 </script>
