@@ -9,6 +9,8 @@
     "signal:start": "node signal_server/index.js"
   },
   "dependencies": {
+    "chroma-js": "^2.0.3",
+    "d3": "^5.9.1",
     "vue": "^2.5.21",
     "vuex": "^3.0.1",
     "ws": "^6.1.3"
